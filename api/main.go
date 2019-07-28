@@ -1,9 +1,9 @@
-package main
+package api
 
 import (
 	"github.com/julienschmidt/httprouter"
 	"net/http"
-	"video-server/handler"
+	"video-server/api/handler"
 )
 
 func RegisterHandlers() *httprouter.Router {
