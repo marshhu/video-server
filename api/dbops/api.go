@@ -4,6 +4,9 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	"time"
+	"video-server/api/defs"
+	"video-server/api/utils"
 )
 
 func AddUserCredential(loginName string, pwd string) error {
@@ -47,4 +50,25 @@ func DeleteUser(loginName string, pwd string) error {
 	}
 	defer stmtDel.Close()
 	return nil
+}
+
+func AddNewVideo(authorId int,name string) (*defs.VideoInfo,error){
+	vid,err := utils.NewUUID()
+	if err != nil{
+		return nil,err
+	}
+
+	t := time.Now()
+	ctime := t.Format("Jan 02 2006,15:04:05")
+	stmtIns,err:= dbConn.Prepare("insert into video_info(id,author_id,name,dispaly_ctime,create_time) values(?,?,?,?,?)")
+	if err != nil {
+		return nil,err
+	}
+	_,err = stmtIns.Exec(vid, authorId,name,ctime,t)
+	if err != nil{
+		return nil,err
+	}
+    res := &defs.VideoInfo{Id:vid,AuthorId:authorId,Name:name,DisplayCtime:ctime}
+	defer stmtIns.Close()
+    return res,nil
 }
