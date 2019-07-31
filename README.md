@@ -43,7 +43,7 @@ CREATE TABLE `comments` (
 `video_id` varchar(64) NOT NULL,
 `author_id` int UNSIGNED NOT NULL,
 `content` text NOT NULL,
-`time` datetime NOT NULL,
+`time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (`id`) 
 );
 

@@ -1,7 +1,10 @@
 package dbops
 
 import (
+	"fmt"
+	"strconv"
 	"testing"
+	"time"
 )
 
 func clearTables() {
@@ -56,7 +59,7 @@ func testReGetUser(t *testing.T) {
 }
 var tempVid string
 
-func TestVideoInfoWorkFlow(t *testing.T){
+func testVideoInfoWorkFlow(t *testing.T){
 	clearTables()
 	t.Run("PrepareUser",testAddUser)
 	t.Run("AddVideo", testAddVideoInfo)
@@ -94,5 +97,35 @@ func testReGetVideoInfo(t *testing.T){
 	}
 	if vid != nil {
 		t.Errorf("Deleting VideoInfo test failed")
+	}
+}
+
+func TestComments(t *testing.T){
+	clearTables()
+	t.Run("AddUser",testAddUser)
+	t.Run("AddComments",testAddComments)
+	t.Run("ListComments",testListComments)
+}
+
+func testAddComments(t *testing.T){
+	vid :="1111"
+	aid :=1
+	content :="this is a test video"
+	err := AddNewComments(vid,aid,content)
+	if err != nil{
+		t.Errorf("Error of AddComments: %v",err)
+	}
+}
+
+func testListComments(t *testing.T){
+	vid :="1111"
+	from,_ := strconv.Atoi(strconv.FormatInt(time.Now().AddDate(0,0,-2).UnixNano() / 1e9,10))
+	to,_ :=  strconv.Atoi(strconv.FormatInt(time.Now().UnixNano() / 1e9,10))
+	res,err := ListComments(vid,from,to)
+	if err != nil{
+		t.Errorf("Error of ListComments: %v",err)
+	}
+	for i,ele := range res{
+		fmt.Printf("comments: %d, %v \n",i,ele)
 	}
 }
