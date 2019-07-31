@@ -98,7 +98,7 @@ func GetVideoInfo(vid string) (*defs.VideoInfo,error){
 	return res, nil
 }
 
-func DeleteVidoInfo(vid string) error{
+func DeleteVideoInfo(vid string) error{
 	stmtDel, err := dbConn.Prepare("delete from video_info where id =?;")
 	if err != nil {
 		log.Printf("delete user error:%s", err)

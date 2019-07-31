@@ -81,7 +81,7 @@ func testGetVideoInfo(t *testing.T){
 }
 
 func testDeleteVideoInfo(t *testing.T){
-	err := DeleteVidoInfo(tempVid)
+	err := DeleteVideoInfo(tempVid)
 	if err != nil {
 		t.Errorf("Error of DeleteVideoInfo:%v", err)
 	}
