@@ -17,9 +17,9 @@ func TestMain(m *testing.M) {
 	clearTables()
 }
 
-func TestUserWorkFlow(t *testing.T) {
+func testUserWorkFlow(t *testing.T) {
 	t.Run("Add", testAddUser)
-	t.Run("GEt", testGetUser)
+	t.Run("Get", testGetUser)
 	t.Run("Del", testDeleteUser)
 	t.Run("ReGet", testReGetUser)
 }
@@ -52,5 +52,47 @@ func testReGetUser(t *testing.T) {
 	}
 	if pwd != "" {
 		t.Errorf("Deleting user test failed")
+	}
+}
+var tempVid string
+
+func TestVideoInfoWorkFlow(t *testing.T){
+	clearTables()
+	t.Run("PrepareUser",testAddUser)
+	t.Run("AddVideo", testAddVideoInfo)
+	t.Run("GetVideo", testGetVideoInfo)
+	t.Run("DelVideo", testDeleteVideoInfo)
+	t.Run("ReGetVideo", testReGetVideoInfo)
+}
+
+func testAddVideoInfo(t *testing.T){
+	vid,err := AddNewVideo(1, "my-video")
+	if err != nil || vid == nil {
+		t.Errorf("Error of AddVideoInfo:%v", err)
+	}
+	tempVid = vid.Id
+}
+
+func testGetVideoInfo(t *testing.T){
+	_,err := GetVideoInfo(tempVid)
+	if err != nil {
+		t.Errorf("Error of GetVideoInfo:%v", err)
+	}
+}
+
+func testDeleteVideoInfo(t *testing.T){
+	err := DeleteVidoInfo(tempVid)
+	if err != nil {
+		t.Errorf("Error of DeleteVideoInfo:%v", err)
+	}
+}
+
+func testReGetVideoInfo(t *testing.T){
+	vid,err := GetVideoInfo(tempVid)
+	if err != nil {
+		t.Errorf("Error of ReGetVideoInfo:%v", err)
+	}
+	if vid != nil {
+		t.Errorf("Deleting VideoInfo test failed")
 	}
 }
